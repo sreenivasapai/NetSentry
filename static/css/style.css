@@ -1,0 +1,289 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #0b0f14;
+    color: #e6edf3;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 250px;
+    background: #11161d;
+    border-right: 1px solid #202833;
+    padding: 25px 18px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-icon {
+    color: #00e5ff;
+}
+
+.subtitle {
+    color: #7d8996;
+    font-size: 12px;
+    margin-top: 6px;
+    margin-bottom: 35px;
+}
+
+.nav-item {
+    display: block;
+    text-decoration: none;
+    color: #8d99a6;
+    padding: 13px 14px;
+    margin-bottom: 7px;
+    border-radius: 7px;
+    transition: 0.2s;
+}
+
+.nav-item:hover,
+.nav-item.active {
+    background: #18232d;
+    color: #00e5ff;
+}
+
+.nav-item span {
+    margin-right: 10px;
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 25px;
+    color: #687482;
+    font-size: 12px;
+}
+
+/* MAIN */
+
+.main {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    padding: 35px;
+}
+
+/* TOPBAR */
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.topbar h1 {
+    font-size: 28px;
+}
+
+.topbar p {
+    color: #7d8996;
+    margin-top: 6px;
+}
+
+.status {
+    border: 1px solid #26313d;
+    padding: 9px 14px;
+    border-radius: 20px;
+    color: #9ba7b4;
+    font-size: 13px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-radius: 50%;
+    background: #00d084;
+    margin-right: 7px;
+}
+
+/* SCAN PANEL */
+
+.scan-panel,
+.results-panel {
+    background: #11161d;
+    border: 1px solid #202833;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.section-title {
+    margin-bottom: 20px;
+}
+
+.section-title h2 {
+    font-size: 18px;
+}
+
+.section-title p {
+    color: #75818d;
+    font-size: 13px;
+    margin-top: 5px;
+}
+
+.scan-form {
+    display: flex;
+    gap: 12px;
+}
+
+.scan-form input {
+    flex: 1;
+    background: #0b0f14;
+    border: 1px solid #293440;
+    border-radius: 7px;
+    padding: 13px 15px;
+    color: white;
+    outline: none;
+}
+
+.scan-form input:focus {
+    border-color: #00e5ff;
+}
+
+.scan-form button {
+    background: #00b8d4;
+    color: #001014;
+    border: none;
+    padding: 0 25px;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.scan-form button:hover {
+    background: #00e5ff;
+}
+
+.scan-status {
+    margin-top: 15px;
+    color: #778491;
+    font-size: 13px;
+}
+
+/* STATS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 25px;
+}
+
+.stat-card {
+    background: #11161d;
+    border: 1px solid #202833;
+    border-radius: 10px;
+    padding: 22px;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #75818d;
+    letter-spacing: 1px;
+}
+
+.stat-value {
+    font-size: 27px;
+    margin-top: 12px;
+    font-weight: bold;
+}
+
+.stat-value.risk {
+    font-size: 13px;
+    color: #75818d;
+}
+
+/* TABLE */
+
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    color: #71808e;
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    padding: 12px;
+    border-bottom: 1px solid #252e38;
+}
+
+td {
+    padding: 13px 12px;
+    border-bottom: 1px solid #1c242d;
+    font-size: 13px;
+}
+
+.empty {
+    text-align: center;
+    color: #626e7a;
+    padding: 30px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .main {
+        margin-left: 200px;
+        width: calc(100% - 200px);
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+
+    .sidebar {
+        display: none;
+    }
+
+    .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .scan-form {
+        flex-direction: column;
+    }
+
+    .scan-form button {
+        padding: 13px;
+    }
+}

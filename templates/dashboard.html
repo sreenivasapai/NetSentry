@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>NetSentry | Security Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <span class="logo-icon">◈</span>
+            <span>NetSentry</span>
+        </div>
+
+        <div class="subtitle">
+            Network Security Platform
+        </div>
+
+        <nav>
+
+            <a href="#" class="nav-item active">
+                <span>▣</span>
+                Dashboard
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⌕</span>
+                Network Scan
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⚠</span>
+                Risk Analysis
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>◫</span>
+                Reports
+            </a>
+
+            <a href="#" class="nav-item">
+                <span>⚙</span>
+                Settings
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <div>NetSentry</div>
+            <small>v0.1.0</small>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <h1>Security Dashboard</h1>
+
+                <p>
+                    Network discovery and security assessment
+                </p>
+            </div>
+
+            <div class="status">
+
+                <span class="status-dot"></span>
+
+                Scanner Online
+
+            </div>
+
+        </header>
+
+
+        <!-- SCAN PANEL -->
+
+        <section class="scan-panel">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>Start Network Scan</h2>
+
+                    <p>
+                        Enter an authorized IP address or hostname
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="scan-form">
+
+                <input
+                    type="text"
+                    id="target"
+                    placeholder="Example: 127.0.0.1"
+                >
+
+                <button id="scanButton"
+                        onclick="startScan()">
+
+                    <span id="buttonText">
+                        Start Scan
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <div id="scanStatus"
+                 class="scan-status">
+
+                Ready to scan
+
+            </div>
+
+        </section>
+
+
+        <!-- STAT CARDS -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    LIVE HOSTS
+                </div>
+
+                <div class="stat-value"
+                     id="liveHosts">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    PORTS DETECTED
+                </div>
+
+                <div class="stat-value"
+                     id="portsDetected">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    SERVICES
+                </div>
+
+                <div class="stat-value"
+                     id="servicesDetected">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-label">
+                    RISK STATUS
+                </div>
+
+                <div class="stat-value risk">
+                    ANALYSIS PENDING
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESULTS -->
+
+        <section class="results-panel">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>Scan Results</h2>
+
+                    <p id="resultTarget">
+                        No scan performed
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Host</th>
+                            <th>Port</th>
+                            <th>Protocol</th>
+                            <th>State</th>
+                            <th>Service</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="resultsTable">
+
+                        <tr>
+
+                            <td colspan="5"
+                                class="empty">
+
+                                No scan results available.
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- SERVICES -->
+
+        <section class="results-panel">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>Service Detection</h2>
+
+                    <p>
+                        Detected services and versions
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Host</th>
+                            <th>Port</th>
+                            <th>Service</th>
+                            <th>Product</th>
+                            <th>Version</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="servicesTable">
+
+                        <tr>
+
+                            <td colspan="5"
+                                class="empty">
+
+                                No service information available.
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='js/dashboard.js') }}">
+</script>
+
+</body>
+
+</html>
