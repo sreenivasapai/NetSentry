@@ -6,10 +6,21 @@ from scanner.scanner_engine import run_scan
 app = Flask(__name__)
 
 
+# Dashboard
+
 @app.route("/")
 def dashboard():
     return render_template("dashboard.html")
 
+
+# Network Scan Page
+
+@app.route("/network-scan")
+def network_scan():
+    return render_template("network_scan.html")
+
+
+# Scan API
 
 @app.route("/scan", methods=["POST"])
 def scan():
@@ -41,7 +52,10 @@ def scan():
         }), 500
 
 
+# Start Application
+
 if __name__ == "__main__":
+
     app.run(
         debug=True,
         host="127.0.0.1",

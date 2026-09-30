@@ -287,3 +287,80 @@ td {
         padding: 13px;
     }
 }
+/* ==============================
+   NETWORK SCAN
+   ============================== */
+
+.scan-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 18px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    color: #75818d;
+    font-size: 12px;
+}
+
+.input-group input,
+.input-group select {
+    background: #0b0f14;
+    border: 1px solid #293440;
+    border-radius: 7px;
+    padding: 12px;
+    color: #e6edf3;
+    outline: none;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #00e5ff;
+}
+
+.scan-actions {
+    margin-top: 20px;
+}
+
+.scan-actions button {
+    background: #00b8d4;
+    color: #001014;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.scan-actions button:hover {
+    background: #00e5ff;
+}
+
+.scan-actions button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.progress-step {
+    padding: 13px 0;
+    border-bottom: 1px solid #1c242d;
+    color: #8b98a5;
+    font-size: 14px;
+}
+
+.progress-step:last-child {
+    border-bottom: none;
+}
+
+@media (max-width: 800px) {
+
+    .scan-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
