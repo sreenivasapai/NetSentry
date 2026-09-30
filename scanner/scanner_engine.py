@@ -3,7 +3,7 @@ from scanner.port_scanner import scan_ports
 from scanner.service_detection import detect_services
 
 
-def run_scan(target):
+def run_scan(target, port_range="1-1000", scan_type="full"):
     """
     Run the complete NetSentry scanning pipeline.
 
@@ -34,24 +34,37 @@ def run_scan(target):
 
     print(f"[+] Live hosts found: {len(live_hosts)}")
 
-    # -------------------------------------------------
+        # -------------------------------------------------
     # Step 2: Port Scanning
     # -------------------------------------------------
 
-    print("\n[2/3] PORT SCANNING")
-    print("-" * 70)
+    port_results = []
 
-    port_results = scan_ports(target)
+    if scan_type in ["full", "port"]:
+
+        print("\n[2/3] PORT SCANNING")
+        print("-" * 70)
+
+        port_results = scan_ports(
+            target,
+            port_range
+        )
 
     # -------------------------------------------------
     # Step 3: Service Detection
     # -------------------------------------------------
 
-    print("\n[3/3] SERVICE DETECTION")
-    print("-" * 70)
+    service_results = []
 
-    service_results = detect_services(target)
+    if scan_type in ["full", "service"]:
 
+        print("\n[3/3] SERVICE DETECTION")
+        print("-" * 70)
+
+        service_results = detect_services(
+            target,
+            port_range
+        )
     # -------------------------------------------------
     # Build Unified Result
     # -------------------------------------------------
