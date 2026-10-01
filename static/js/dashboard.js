@@ -1,22 +1,37 @@
 async function startScan() {
 
-    const targetInput = document.getElementById("target");
-    const target = targetInput.value.trim();
+    const target =
+        document.getElementById("target").value.trim();
 
-    const button = document.getElementById("scanButton");
-    const buttonText = document.getElementById("buttonText");
-    const status = document.getElementById("scanStatus");
+    const button =
+        document.getElementById("scanButton");
 
+    const buttonText =
+        document.getElementById("buttonText");
+
+    const status =
+        document.getElementById("scanStatus");
+
+
+    // Validate target
     if (!target) {
 
-        status.textContent = "Please enter a target.";
+        status.textContent =
+            "Please enter a target.";
 
         return;
     }
 
+
+    // Loading state
     button.disabled = true;
-    buttonText.textContent = "Scanning...";
-    status.textContent = "NetSentry is scanning the target...";
+
+    buttonText.textContent =
+        "Scanning...";
+
+    status.textContent =
+        "NetSentry is scanning " + target + "...";
+
 
     try {
 
@@ -29,25 +44,90 @@ async function startScan() {
             },
 
             body: JSON.stringify({
-                target: target
+
+                target: target,
+
+                port_range: "1-1000",
+
+                scan_type: "full"
+
             })
 
         });
 
+
         const data = await response.json();
 
-        if (!data.success) {
 
-            throw new Error(data.error);
+        if (!response.ok || !data.success) {
+
+            throw new Error(
+                data.error || "Scan failed."
+            );
 
         }
 
-        displayResults(data.results);
+
+        const results =
+            data.results;
+
+
+        // ==============================
+        // UPDATE STATISTICS
+        // ==============================
+
+        document.getElementById(
+            "liveHosts"
+        ).textContent =
+            results.live_hosts.length;
+
+
+        document.getElementById(
+            "portsDetected"
+        ).textContent =
+            results.ports.length;
+
+
+        document.getElementById(
+            "servicesDetected"
+        ).textContent =
+            results.services.length;
+
+
+        // ==============================
+        // UPDATE TARGET
+        // ==============================
+
+        document.getElementById(
+            "resultTarget"
+        ).textContent =
+            "Target: " + results.target;
+
+
+        // ==============================
+        // UPDATE PORT TABLE
+        // ==============================
+
+        displayPorts(results.ports);
+
+
+        // ==============================
+        // UPDATE SERVICE TABLE
+        // ==============================
+
+        displayServices(results.services);
+
+
+        // ==============================
+        // STATUS
+        // ==============================
 
         status.textContent =
             "Scan completed successfully.";
 
+
     }
+
     catch (error) {
 
         console.error(error);
@@ -56,78 +136,129 @@ async function startScan() {
             "Scan failed: " + error.message;
 
     }
+
     finally {
 
         button.disabled = false;
-        buttonText.textContent = "Start Scan";
+
+        buttonText.textContent =
+            "Start Scan";
 
     }
 }
 
 
-function displayResults(results) {
+// =====================================
+// PORT TABLE
+// =====================================
 
-    document.getElementById("liveHosts").textContent =
-        results.live_hosts.length;
+function displayPorts(ports) {
 
-    document.getElementById("portsDetected").textContent =
-        results.ports.length;
-
-    document.getElementById("servicesDetected").textContent =
-        results.services.length;
-
-    document.getElementById("resultTarget").textContent =
-        "Target: " + results.target;
+    const table =
+        document.getElementById(
+            "resultsTable"
+        );
 
 
-    // -----------------------------
-    // PORT RESULTS
-    // -----------------------------
+    table.innerHTML = "";
 
-    const portTable =
-        document.getElementById("resultsTable");
 
-    portTable.innerHTML = "";
+    if (!ports || ports.length === 0) {
 
-    results.ports.forEach(port => {
+        table.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty">
+                    No ports detected.
+                </td>
+            </tr>
+        `;
 
-        const row = document.createElement("tr");
+        return;
+    }
+
+
+    ports.forEach(port => {
+
+        const row =
+            document.createElement("tr");
+
 
         row.innerHTML = `
-            <td>${port.host}</td>
+            <td>${escapeHTML(port.host)}</td>
             <td>${port.port}</td>
-            <td>${port.protocol}</td>
-            <td>${port.state}</td>
-            <td>${port.service}</td>
+            <td>${escapeHTML(port.protocol)}</td>
+            <td>${escapeHTML(port.state)}</td>
+            <td>${escapeHTML(port.service)}</td>
         `;
 
-        portTable.appendChild(row);
+
+        table.appendChild(row);
 
     });
+}
 
 
-    // -----------------------------
-    // SERVICE RESULTS
-    // -----------------------------
+// =====================================
+// SERVICE TABLE
+// =====================================
 
-    const serviceTable =
-        document.getElementById("servicesTable");
+function displayServices(services) {
 
-    serviceTable.innerHTML = "";
+    const table =
+        document.getElementById(
+            "servicesTable"
+        );
 
-    results.services.forEach(service => {
 
-        const row = document.createElement("tr");
+    table.innerHTML = "";
+
+
+    if (!services || services.length === 0) {
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty">
+                    No service information available.
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+
+    services.forEach(service => {
+
+        const row =
+            document.createElement("tr");
+
 
         row.innerHTML = `
-            <td>${service.host}</td>
+            <td>${escapeHTML(service.host)}</td>
             <td>${service.port}</td>
-            <td>${service.service}</td>
-            <td>${service.product || "-"}</td>
-            <td>${service.version || "-"}</td>
+            <td>${escapeHTML(service.service)}</td>
+            <td>${escapeHTML(service.product || "-")}</td>
+            <td>${escapeHTML(service.version || "-")}</td>
         `;
 
-        serviceTable.appendChild(row);
+
+        table.appendChild(row);
 
     });
+}
+
+
+// =====================================
+// BASIC HTML ESCAPING
+// =====================================
+
+function escapeHTML(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value ?? "";
+
+    return div.innerHTML;
 }
