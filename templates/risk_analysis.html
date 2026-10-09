@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetSentry | Risk Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="logo">
+            <span class="logo-icon">◈</span>
+            <span>NetSentry</span>
+        </div>
+        <div class="subtitle">Network Security Platform</div>
+
+        <nav>
+            <a href="/" class="nav-item"><span>▣</span> Dashboard</a>
+            <a href="/network-scan" class="nav-item"><span>⌕</span> Network Scan</a>
+            <a href="/risk-analysis" class="nav-item active"><span>⚠</span> Risk Analysis</a>
+            <a href="#" class="nav-item"><span>◫</span> Reports</a>
+            <a href="#" class="nav-item"><span>⚙</span> Settings</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div>NetSentry</div>
+            <small>v0.1.0</small>
+        </div>
+    </aside>
+
+    <main class="main">
+        <header class="topbar">
+            <div>
+                <h1>Risk Analysis</h1>
+                <p>Review potential security concerns identified by NetSentry.</p>
+            </div>
+        </header>
+
+        <section class="scan-panel">
+            <div class="section-title">
+                <h2>Latest Scan Findings</h2>
+                <p id="riskTarget">Run a scan to analyze its findings.</p>
+            </div>
+
+            <div id="riskMessage" class="scan-status" role="status">
+                Loading risk analysis...
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Findings</h3>
+                    <p id="riskTotal">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>High Severity</h3>
+                    <p id="riskHigh">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Medium Severity</h3>
+                    <p id="riskMedium">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Low Severity</h3>
+                    <p id="riskLow">0</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-panel">
+            <div class="section-title">
+                <h2>Security Findings</h2>
+                <p>Recommendations are preliminary review guidance, not confirmed vulnerabilities.</p>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Severity</th>
+                            <th>Host</th>
+                            <th>Port</th>
+                            <th>Service</th>
+                            <th>Finding</th>
+                            <th>Recommendation</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="riskTable">
+                        <tr>
+                            <td colspan="7" class="empty">Loading findings...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="{{ url_for('static', filename='js/risk_analysis.js') }}"></script>
+</body>
+</html>

@@ -16,6 +16,9 @@ def dashboard():
 @app.route("/network-scan")
 def network_scan():
     return render_template("network_scan.html")
+@app.route("/risk-analysis")
+def risk_analysis():
+    return render_template("risk_analysis.html")
 
 
 # Scan API
