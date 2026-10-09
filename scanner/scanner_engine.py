@@ -1,104 +1,92 @@
+
 from scanner.host_discovery import discover_hosts
 from scanner.port_scanner import scan_ports
 from scanner.service_detection import detect_services
+from analysis.risk_engine import analyze_scan
 
 
 def run_scan(target, port_range="1-1000", scan_type="full"):
     """
-    Run the complete NetSentry scanning pipeline.
+    Run the NetSentry scanning pipeline.
 
-    Pipeline:
-        1. Host discovery
-        2. TCP port scanning
-        3. Service/version detection
+    scan_type:
+        full    - port scanning and service detection
+        port    - port scanning only
+        service - service detection only
     """
 
     print("\n" + "=" * 70)
     print("                 NETSENTRY SCAN ENGINE")
     print("=" * 70)
-
     print(f"\n[*] Target: {target}")
+    print(f"[*] Port range: {port_range}")
+    print(f"[*] Scan type: {scan_type}")
 
-    # -------------------------------------------------
-    # Step 1: Host Discovery
-    # -------------------------------------------------
+    if scan_type not in {"full", "port", "service"}:
+        raise ValueError("Invalid scan type.")
 
-    print("\n[1/3] HOST DISCOVERY")
+    result = {
+        "target": target,
+        "live_hosts": [],
+        "ports": [],
+        "services": [],
+        "findings": [],
+    }
+
+    # Step 1: Host discovery
+    print("\n[1/4] HOST DISCOVERY")
     print("-" * 70)
 
     live_hosts = discover_hosts(target)
+    result["live_hosts"] = live_hosts
 
     if not live_hosts:
         print("[!] No live hosts discovered.")
-        return {}
+        return result
 
     print(f"[+] Live hosts found: {len(live_hosts)}")
 
-        # -------------------------------------------------
-    # Step 2: Port Scanning
-    # -------------------------------------------------
-
-    port_results = []
-
-    if scan_type in ["full", "port"]:
-
-        print("\n[2/3] PORT SCANNING")
+    # Step 2: Port scanning
+    if scan_type in {"full", "port"}:
+        print("\n[2/4] PORT SCANNING")
         print("-" * 70)
 
-        port_results = scan_ports(
-            target,
-            port_range
-        )
+        result["ports"] = scan_ports(target, port_range)
 
-    # -------------------------------------------------
-    # Step 3: Service Detection
-    # -------------------------------------------------
-
-    service_results = []
-
-    if scan_type in ["full", "service"]:
-
-        print("\n[3/3] SERVICE DETECTION")
+    # Step 3: Service detection
+    if scan_type in {"full", "service"}:
+        print("\n[3/4] SERVICE DETECTION")
         print("-" * 70)
 
-        service_results = detect_services(
-            target,
-            port_range
-        )
-    # -------------------------------------------------
-    # Build Unified Result
-    # -------------------------------------------------
+        result["services"] = detect_services(target, port_range)
 
-    scan_result = {
-        "target": target,
-        "live_hosts": live_hosts,
-        "ports": port_results,
-        "services": service_results
-    }
+    # Step 4: Risk analysis
+    print("\n[4/4] RISK ANALYSIS")
+    print("-" * 70)
 
-    # -------------------------------------------------
+    result["findings"] = analyze_scan(
+        result["ports"],
+        result["services"],
+    )
+
+    print(f"[+] Risk findings: {len(result['findings'])}")
+
     # Summary
-    # -------------------------------------------------
-
     print("\n" + "=" * 70)
     print("                 SCAN SUMMARY")
     print("=" * 70)
+    print(f"Target              : {target}")
+    print(f"Live Hosts          : {len(result['live_hosts'])}")
+    print(f"Ports Detected      : {len(result['ports'])}")
+    print(f"Services Detected   : {len(result['services'])}")
+    print(f"Risk Findings       : {len(result['findings'])}")
+    print("\n[+] NetSentry scan completed.")
 
-    print(f"\nTarget              : {target}")
-    print(f"Live Hosts          : {len(live_hosts)}")
-    print(f"Ports Detected      : {len(port_results)}")
-    print(f"Services Detected   : {len(service_results)}")
-
-    print("\n[+] NetSentry scan completed successfully.")
-
-    return scan_result
+    return result
 
 
 if __name__ == "__main__":
-
-    target = input(
-        "Enter authorized target IP/hostname: "
-    ).strip()
+    target = input("Enter authorized target IP/hostname: ").strip()
 
     if not target:
         print("[!] Target cannot be empty.")

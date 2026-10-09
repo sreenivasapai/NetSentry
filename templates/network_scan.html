@@ -314,7 +314,71 @@
 
                 </div>
 
+
             </section>
+            
+            <!-- RISK ANALYSIS RESULTS -->
+
+            <section class="results-panel">
+
+                <div class="section-title">
+                    <h2>Risk Analysis</h2>
+                    <p>Potential security concerns identified from detected services</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total Findings</h3>
+                        <p id="riskTotal">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>High Severity</h3>
+                        <p id="riskHigh">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Medium Severity</h3>
+                        <p id="riskMedium">0</p>
+                    </div>
+
+                    <div class="stat-card">
+                        <h3>Low Severity</h3>
+                        <p id="riskLow">0</p>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Severity</th>
+                                <th>Host</th>
+                                <th>Port</th>
+                                <th>Service</th>
+                                <th>Finding</th>
+                                <th>Recommendation</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="riskTable">
+                            <tr>
+                                <td colspan="7" class="empty">
+                                    No risk analysis results available.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="scan-status">
+                    Findings indicate areas for review; they do not confirm
+                    that a vulnerability exists.
+                </p>
+
+            </section>
+
 
         </main>
 
