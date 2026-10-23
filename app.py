@@ -19,6 +19,10 @@ def network_scan():
 @app.route("/risk-analysis")
 def risk_analysis():
     return render_template("risk_analysis.html")
+@app.route("/api/risk-analysis")
+def get_risk_analysis():
+    # Return the latest scan's findings as JSON.
+    ...
 
 
 # Scan API
